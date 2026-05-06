@@ -1,0 +1,73 @@
+{
+  "repo": "juliaqueue",
+  "language": "Julia",
+  "category": "Simulations",
+  "goal": "Simulate queueing systems and percentile summaries.",
+  "review_model": {
+    "terms": [
+      "input pressure",
+      "state drift",
+      "review cost",
+      "decision risk"
+    ],
+    "lanes": [
+      "ship",
+      "watch",
+      "hold"
+    ],
+    "score": "signal * 2 + slack + confidence - drag * 3",
+    "purpose": "surface the domain-specific cases that need the most careful review"
+  },
+  "cases": [
+    {
+      "name": "baseline",
+      "focus": "input pressure",
+      "signal": 42,
+      "slack": 32,
+      "drag": 30,
+      "confidence": 92,
+      "score": 118,
+      "lane": "watch"
+    },
+    {
+      "name": "stress",
+      "focus": "state drift",
+      "signal": 79,
+      "slack": 53,
+      "drag": 27,
+      "confidence": 81,
+      "score": 211,
+      "lane": "ship"
+    },
+    {
+      "name": "edge",
+      "focus": "review cost",
+      "signal": 65,
+      "slack": 39,
+      "drag": 17,
+      "confidence": 54,
+      "score": 172,
+      "lane": "ship"
+    },
+    {
+      "name": "recovery",
+      "focus": "decision risk",
+      "signal": 56,
+      "slack": 45,
+      "drag": 8,
+      "confidence": 47,
+      "score": 180,
+      "lane": "ship"
+    },
+    {
+      "name": "stale",
+      "focus": "input pressure",
+      "signal": 63,
+      "slack": 43,
+      "drag": 32,
+      "confidence": 45,
+      "score": 118,
+      "lane": "watch"
+    }
+  ]
+}

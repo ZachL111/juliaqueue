@@ -1,68 +1,40 @@
 # juliaqueue
 
-`juliaqueue` treats simulations as a local verification problem. The Julia implementation is intentionally narrow, but the fixtures and notes make the behavior explicit.
+`juliaqueue` keeps a focused Julia implementation around simulations. The project goal is to simulate queueing systems and percentile summaries.
 
-## Juliaqueue Checkpoints
+## Use Case
 
-Treat the compact fixture as the contract and the extended examples as a scratchpad. The code should stay boring enough that a change in behavior is obvious from the test output.
+I want this repository to be useful as a quick reading exercise: fixtures first, implementation second, verifier last.
 
-## What This Is For
+## Juliaqueue Review Notes
 
-The repository exists to keep a technical idea small enough to reason about. The implementation avoids external dependencies where possible, then uses fixtures to make changes easy to review.
+Start with `state drift` and `input pressure`. Those cases create the widest score spread in this repo, so they are the best quick check when the model changes.
 
-## Architecture Notes
+## Highlights
 
-The design is intentionally direct: parse or construct a signal, score it, classify it, and verify the expected branch. This makes the repository useful for studying simulations behavior without needing a service or database unless the language project itself is SQL. The Julia project keeps the model in a small module with assertions in a local test script.
+- `fixtures/domain_review.csv` adds cases for input pressure and state drift.
+- `metadata/domain-review.json` records the same cases in structured form.
+- `config/review-profile.json` captures the read order and the two review questions.
+- `examples/juliaqueue-walkthrough.md` walks through the case spread.
+- The Julia code includes a review path for `state drift` and `input pressure`.
+- `docs/field-notes.md` explains the strongest and weakest cases.
 
-## Case Study
+## Code Layout
 
-`examples/extended_cases.csv` adds six named cases. I kept the names plain so failures are easy to read in a terminal: baseline, pressure, surge, degraded, recovery, and boundary.
+The implementation keeps the scoring rule plain: reward signal and confidence, preserve slack, penalize drag, then classify the result into a review lane.
 
-## Useful Pieces
+The Julia code keeps the review rule close to the tests.
 
-- Uses fixture data to keep policy checks changes visible in code review.
-- Includes extended examples for fixture data, including `surge` and `degraded`.
-- Documents local reports tradeoffs in `docs/operations.md`.
-- Runs locally with a single verification command and no external credentials.
-- Stores project constants and verification metadata in `metadata/project.json`.
-
-## Tooling
-
-Use a normal shell with Julia available on `PATH`. The verifier is written as a PowerShell script because the portfolio was assembled on Windows.
-
-## Quality Gate
-
-```powershell
-powershell -NoProfile -ExecutionPolicy Bypass -File scripts/audit.ps1
-```
-
-The audit command checks repository structure and README constraints before it delegates to the verifier.
-
-## Project Layout
-
-- `src`: primary implementation
-- `tests`: verification harness
-- `fixtures`: compact golden scenarios
-- `examples`: expanded scenario set
-- `metadata`: project constants and verification metadata
-- `docs`: operations and extension notes
-- `scripts`: local verification and audit commands
-
-## Scope
-
-The fixture set is deliberately small. That keeps the review surface clear, but it also means the model should not be treated as a complete domain simulator.
-
-## Expansion Ideas
-
-- Add a short report command that prints the score breakdown for a single scenario.
-- Add malformed input fixtures so the failure path is as visible as the happy path.
-- Split the scoring constants into a typed configuration object and validate it before use.
-- Add one more simulations fixture that focuses on a malformed or borderline input.
-
-## Local Workflow
+## Run The Check
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File scripts/verify.ps1
 ```
 
-This runs the language-level build or test path against the compact fixture set.
+## Regression Path
+
+The check exercises the source code and the review fixture. `stress` is the high score at 211; `baseline` is the low score at 118.
+
+## Future Work
+
+No external service is required. A deeper version would add more negative cases and a clearer boundary around invalid input.
