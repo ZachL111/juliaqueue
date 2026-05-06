@@ -1,0 +1,17 @@
+{
+  "repo": "juliaqueue",
+  "thresholds": {
+    "signal": 3,
+    "slack": 2,
+    "confidence": 1,
+    "drag": 2,
+    "ship": 161,
+    "watch": 123
+  },
+  "terms": [
+    "input pressure",
+    "state drift",
+    "review cost",
+    "decision risk"
+  ]
+}
